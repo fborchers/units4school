@@ -4,15 +4,20 @@
 README
 ======
 
+---------------------------------------------------------
 units4school
 A Simple Tool to Generate Unit Tests for Physics Teachers 
 
 Version: 	v0.05
-Datum:		12.1.2019
-Autor: 		F. Borchers
+OS's		Linux (Ubuntu, Debian,...) and Mac OS
+		Windows is not supported as of today.
+Date:		12.1.2019
+Author:		F. Borchers
+Languages:	German
+---------------------------------------------------------
 
 
-Questions from three different universes:
+Questions from three different topics:
  + physical units
  + unit prefixes and
  + physical constants
@@ -22,19 +27,50 @@ Questions from three different universes:
 PREREQUISITES
 -------------
 
-R, OpenOffice, pdflatex
+The following software is required to run units4school:
+	R, sed, OpenOffice, pdflatex
 
-Check on terminal with:
+To check if you have the software installed run in a terminal:
 	R --version
 	pdflatex --version
 and
-	soffice --version
+	soffice --help
+	sed
+
+Download and install `R` from 
+	https://www.r-project.org/
+The program `sed` should have shipped with your Linux or Mac.
+Then `pdflatex` is part of any standard LaTeX distribution, check 
+	https://www.latex-project.org/
+It will be necessary to restart the computer after installing TeX, even with MacTeX on a Macintosh computer.
+At last, `soffice` is the command line tool of LibreOffice. On a Linux machine it is available after installing LibreOffice. On Mac you will have to specify the full path to its binary. For example on my machine (Mac OS 10.10) this is:
+	/Applications/LibreOffice.app/Contents/MacOS/soffice
+For some reason the conversion utility of OpenOffice does not work (version 4.1.6). The problem is that Apache's OpenOffice's `soffice` comes without the command-line option --convert-to. Use LibreOffice instead, or tell me how to do it with OpenOffice.
 
 
-RUN
----
+
+USAGE
+-----
 
 Download the files into a directory and then run `make pdf`.
+
+make pdf
+make print
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
