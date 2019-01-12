@@ -1,0 +1,136 @@
+\documentclass[11pt]{article}
+
+\usepackage{cmbright}
+
+%% font setup for latex:
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage[ngerman]{babel}
+\usepackage[german=quotes]{csquotes}
+
+\usepackage{xcolor}
+\definecolor{AccentColor}{HTML}{d7191c}%% red.
+
+
+
+\usepackage{geometry}
+\geometry{%xetex,
+paper=a5paper,%a4paper,
+layout=a5paper,% defaults to paper if omitted.
+showframe=false,%% showframe, showcrop  %false,showcrop=true,
+margin=4mm,
+top=6mm,
+left=12mm
+}
+
+
+
+
+
+
+% siunitx --------
+\usepackage[locale=DE,per-mode=fraction]{siunitx}
+% deal with the ß-bug, source:
+% https://tex.stackexchange.com/questions/33140/mathpazo-siunitx-%CF%80-turns-into-%C3%9F
+\protected\def\numpi{\text{\ensuremath{\pi}}}
+\sisetup{input-symbols = \numpi}
+% Since make's sed replacement changes \pico (workaround) :
+%\DeclareSIPrefix\numpico{numpico}{-12} % fails, instead:
+\def\numpico{\pico}
+
+
+
+
+
+
+
+%% Question and Answer Hooks --------
+% previous way using qahooks.sty :
+% \usepackage{qahooks}
+\usepackage{ifthen}
+
+\newif\ifprintanswers
+\printanswersfalse
+\DeclareOption{answers}{\printanswerstrue}
+\DeclareOption{noanswers}{\printanswersfalse}
+
+\def\printanswers{\printanswerstrue}
+\def\noprintanswers{\printanswersfalse}
+
+
+\newcounter{exerciseID}
+
+\newenvironment{question}[1][] % optional argument to ignore exercise points if provided
+{
+	\refstepcounter{exerciseID}%
+	\trivlist%
+		\item[\llap{\theexerciseID.}]{}%
+}% end of begin environment question.
+{\endtrivlist}% end question environment
+
+
+
+%% Backward compatibility :
+\newcommand{\omitsolution}{}
+
+
+
+
+
+
+
+\parindent=0pt
+
+\AtBeginDocument{
+	% add tomorrow's date  
+	% error if end of month...
+	\advance\day by +1
+}
+
+
+
+
+
+\begin{document}
+\printanswers
+
+Name: \rule[-.4ex]{7cm}{.4pt}\hfill%
+% add the date:
+\the\day.\the\month.\the\year%
+\hspace*{.5cm}% add some margin space.
+
+
+% Section Header ---
+\vspace{6mm}
+\textbf{\large Einheiten-Abfrage, Physik (K1) \ifprintanswers \hfill \textcolor{AccentColor}{Antworten}\fi}
+\vspace{3mm}
+
+% Hinweis ---
+Runde bei Rechenaufgaben ggf. auf drei relevante Stellen.
+
+
+
+
+%% Fill up to 15 questions overall: --------
+%% This copy-paste removes a need for another package.
+%% The counter 'exercise' is from the qahooks.sty :
+\ifnum\theexerciseID<15 {\input{build/Q1}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q2}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q3}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q4}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q5}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q6}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q7}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q8}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q9}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q10}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q11}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q12}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q13}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q14}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q15}} \fi
+%
+%exercise counter: \theexercise{} should read 15.
+%% end loop test.
+\end{document}
