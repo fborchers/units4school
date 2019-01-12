@@ -17,3 +17,28 @@ Questions from three different universes:
  + unit prefixes and
  + physical constants
 
+
+
+PREREQUISITES
+-------------
+
+R, OpenOffice, pdflatex
+
+Check on terminal with:
+	R --version
+	pdflatex --version
+and
+	soffice --version
+
+
+RUN
+---
+
+Download the files into a directory and then run `make pdf`.
+
+
+
+
+
+
+
