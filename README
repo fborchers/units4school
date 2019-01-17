@@ -30,7 +30,7 @@ Questions from three different topics will be used:
  + unit prefixes 	(see table.prefixes.ods)  	and
  + physical constants 	(see table.constants.ods)
 
-
+Mac Users will have to modify the makefile: Find 'soffice' in this README for instructions.
 
 USAGE
 -----
