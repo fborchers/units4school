@@ -33,9 +33,9 @@ INSTALL AND USE
 
 For the impatient: Run 
 
-  make test
-  make pdf  (once or repeatedly)
-  make print
+    make test
+    make pdf  (once or repeatedly)
+    make print
 
 In Detail: Download the files into a directory, unzip and then run:
 	make test
