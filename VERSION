@@ -1,0 +1,27 @@
+CHANGELOG
+---------
+- v0.11 from Aug 10th, 2021, added functions tSw and wSw
+  to simplify the process of asking for engineering questions.
+  Removed the following lines from the README:
+  Running `make pdf` again will produce another test replacing `out_units4school.pdf` (containing answers). Run this as many times as you like until you find a suitable test, but you may as well take the first one.
+  Then run `make print` to produce a printable A4 page without solutions. This will only convert the current test to a print-friendly version without the answers.
+
+- v0.10 from Aug  8th, 2021, saved as -b-
+  To every row there will be one question only. 
+  Added two questiontypes to the prefixes.
+
+- v0.08 from Jul 31st, 2020
+  The program has been in use for a full year now. I have added documentation for 
+  the routines in 'questions.R'.
+- v0.07  
+  Supply a branch with csv-files just in case LibreOffice is missing.  
+  Updated README, now with a CHANGELOG section and correct markdown markup.
+- v0.06  
+  Added a class definition `units4school`.  
+  Fixed the `print` routine to prevent new questions.  
+  Makefile now contains a `make test` to check installation.
+- v0.05  
+  First upload to github  
+  Now with a `summary.pdf` with all the data summarized and an ple.
+- v0.04 from Jan 3rd, 2019
+  Working attempt number one

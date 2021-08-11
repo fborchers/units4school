@@ -3,82 +3,158 @@ FILE     := units4school
 OBJDIR   := build
 PDFFILE  := $(OBJDIR)/$(FILE).pdf
 LOG      := $(OBJDIR)/LOG
-QUESTIONS:= $(addprefix $(OBJDIR)/, Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8 Q9 Q10 Q11 Q12 Q13 Q14 Q15)
-csvfiles := $(OBJDIR)/table.units.csv $(OBJDIR)/table.prefix.csv $(OBJDIR)/table.constants.csv
+QUESTIONS:= $(addprefix $(OBJDIR)/, Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8 Q9 Q10 Q11 Q12 Q13 Q14 Q15 Q16)
+srcfiles := table.units.ods table.prefix.ods table.constants.ods
 
 # Variable `soffice` holds a link to LibreOffice's command-line tool:
-# On a Mac this has to be the full path to soffice.
+# On a Mac this has to be the full path to soffice. On the Mac I have this was:
+# soffice := /Volumes/DISKNAME/Applications/LibreOffice.app/Contents/MacOS/soffice
 soffice  := soffice
 
-.PHONY: pdf out print test clean distclean
+.PHONY: export out pdf print  
 
 # This phony target force make to generate new questions every run:
 .PHONY: $(OBJDIR)/Q1
 
 #dvi: $(OBJDIR)/$(FILE).dvi
 #ps:  $(OBJDIR)/$(FILE).ps
-pdf: out_$(FILE).pdf
+#pdf: out_$(FILE).pdf
 print: print_$(FILE).pdf
 
-test: $(QUESTIONS) 
 
 
-# Precious files will not be deleted in a single run (overzealous deletion):
-.PRECIOUS: $(QUESTIONS) $(csvfiles) $(PDFFILE)
 
 
 $(OBJDIR):
 	@mkdir $(OBJDIR)
 
+# Create the editable ods-tables 
+# (?) from their order-only ( | ) sources.
+# You will have to add one column in front with "#"s in the 
+# ods-files to disable some rows.
+# To be used as ...10.ods  or ...11.ods :
+$(OBJDIR)/table.prefix.%.ods: table.prefix.ods | $(OBJDIR)
+	@cp $< $@
+$(OBJDIR)/table.units.%.ods: table.units.ods | $(OBJDIR)
+	@cp $< $@
+$(OBJDIR)/table.constants.%.ods: table.constants.ods | $(OBJDIR)
+	@cp $< $@
+
 # Generic rule to create the readable csv-files for R:
 # 'soffice' is a command-line tool to convert from LibreOffice to textfile.
 # The bit 1 (or 2) >/dev/null at end of line will suppress printing to the terminal.
-table.%.csv: table.%.ods
+table.%.csv: $(OBJDIR)/table.%.ods
 	@$(soffice) --headless --convert-to csv:"Text - txt - csv (StarCalc)":59,ANSI,0 $< 1>/dev/null 2>/dev/null
+# The intermediate target table.%.csv will be deleted automatically;
+# this is why a line "rm table.prefix.10.csv ..." might appear.
+# The resulting csv-file will be moved to $(OBJDIR) in the next step.
+
 
 # Copy the csv file to $(OBJDIR) and at the same time replace
 # the string '\pi' with '\numpi'. This is a workaround, see 
 # units4school.tex for its handling of \numpi.
-#
 # Also, order-only dependency on $(OBJDIR); the directory just has to be there:
 $(OBJDIR)/table.%.csv: table.%.csv | $(OBJDIR)
 	@# mv $< $@
 	@sed "s/\pi/numpi/g" $< > $@
 
-# generc rule to make a question:
-# test.R routine will make all 15 questions at once (save runtime):
-$(OBJDIR)/Q1: $(csvfiles) questions.R
-	@#echo "Generating questions ..."
-	@Rscript questions.R
+
+10.ods := $(addprefix $(OBJDIR)/,$(addsuffix .10.ods,$(basename $(srcfiles))))
+11.ods := $(addprefix $(OBJDIR)/,$(addsuffix .11.ods,$(basename $(srcfiles))))
+12.ods := $(addprefix $(OBJDIR)/,$(addsuffix .12.ods,$(basename $(srcfiles))))
+13.ods := $(addprefix $(OBJDIR)/,$(addsuffix .13.ods,$(basename $(srcfiles))))
+
+# Precious files will not be deleted in a single run (overzealous deletion):
+.PRECIOUS:  $(10.ods) $(11.ods) $(12.ods) $(13.ods) 
+
+10.csv := $(addsuffix .csv,$(basename $(10.ods)))
+11.csv := $(addsuffix .csv,$(basename $(11.ods)))
+12.csv := $(addsuffix .csv,$(basename $(12.ods)))
+13.csv := $(addsuffix .csv,$(basename $(13.ods)))
 
 
-# General rule to generate the pdf file:
-# File out_%.pdf shall contain the answers of the test, so that's
-# why the option 'answers' is passed on to LaTeX:
-out_%.pdf: %.tex $(QUESTIONS)
-	@pdflatex -output-directory=build "\PassOptionsToClass{answers}{./units4school}\input{$<}" > $(LOG) 2>&1
-	@mv $(OBJDIR)/$*.pdf $@
-# If 'out' had been called, only then will $(OBJDIR)/%.aux have changed.
-# File print_%.pdf shall not contain any answers, so no options passed:
-print_%.pdf: %.tex $(OBJDIR)/%.aux
-	@pdflatex -output-directory=build $< > $(LOG) 2>&1
-	@# Again, 1>/dev/null 2>/dev/null will suppress messages. 
-	@pdfnup --landscape --nup 2x1 $(OBJDIR)/$*.pdf $(OBJDIR)/$*.pdf --outfile $@ 1>/dev/null 2>/dev/null
+# Now, the actual build routines:
+.PHONY: 10 11 12 13
+
+10: questions.R $(10.csv)
+	@echo "Generating questions ..."
+	@Rscript questions.R 10
+	@echo "Running LaTeX on input file (compilation log in $(LOG))..."
+	@pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1	
+	@#mv $(OBJDIR)/$(FILE).pdf out_einheitenabfrage.pdf
+	@pdfjam --landscape --nup 2x1 $(OBJDIR)/$(FILE).pdf $(OBJDIR)/$(FILE).pdf --outfile out_einheitenabfrage.pdf 1>/dev/null 2>/dev/null
+	@pdflatex -output-directory=build "\PassOptionsToClass{answers}{./units4school}\input{$(FILE).tex}" > $(LOG) 2>&1
+	@mv $(OBJDIR)/$(FILE).pdf out_einheitenloesungen.pdf
+
+11: questions.R $(11.csv)
+	@echo "Generating questions ..."
+	@Rscript questions.R 11
+	@echo "Running LaTeX on input file (compilation log in $(LOG))..."
+	@pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1	
+	@#mv $(OBJDIR)/$(FILE).pdf out_einheitenabfrage.pdf
+	@pdfjam --landscape --nup 2x1 $(OBJDIR)/$(FILE).pdf $(OBJDIR)/$(FILE).pdf --outfile out_einheitenabfrage.pdf 1>/dev/null 2>/dev/null
+	@pdflatex -output-directory=build "\PassOptionsToClass{answers}{./units4school}\input{$(FILE).tex}" > $(LOG) 2>&1
+	@mv $(OBJDIR)/$(FILE).pdf out_einheitenloesungen.pdf
+
+12: questions.R $(12.csv)
+	@echo "Generating questions ..."
+	@Rscript questions.R 12
+	@echo "Running LaTeX on input file (compilation log in $(LOG))..."
+	@pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1	
+	@#mv $(OBJDIR)/$(FILE).pdf out_einheitenabfrage.pdf
+	@pdfjam --landscape --nup 2x1 $(OBJDIR)/$(FILE).pdf $(OBJDIR)/$(FILE).pdf --outfile out_einheitenabfrage.pdf 1>/dev/null 2>/dev/null
+	@pdflatex -output-directory=build "\PassOptionsToClass{answers}{./units4school}\input{$(FILE).tex}" > $(LOG) 2>&1
+	@mv $(OBJDIR)/$(FILE).pdf out_einheitenloesungen.pdf
+
+13: questions.R $(13.csv)
+	@echo "Generating questions ..."
+	@Rscript questions.R 13
+	@echo "Running LaTeX on input file (compilation log in $(LOG))..."
+	@pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1	
+	@#mv $(OBJDIR)/$(FILE).pdf out_einheitenabfrage.pdf
+	@pdfjam --landscape --nup 2x1 $(OBJDIR)/$(FILE).pdf $(OBJDIR)/$(FILE).pdf --outfile out_einheitenabfrage.pdf 1>/dev/null 2>/dev/null
+	@pdflatex -output-directory=build "\PassOptionsToClass{answers}{./units4school}\input{$(FILE).tex}" > $(LOG) 2>&1
+	@mv $(OBJDIR)/$(FILE).pdf out_einheitenloesungen.pdf
+
+
+# A simple print routine :
+pdf: out_einheitenabfrage.pdf
+out_einheitenabfrage.pdf: $(FILE).tex questions.R
+	@pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1
+	@mv $(OBJDIR)/$(FILE).pdf out_einheitenabfrage.pdf
 
 
 
+
+
+
+.PHONY: clean distclean export test  
+
+
+# This test routine will check if the necessary programs are installed:
+test:
+	@echo "...Looking for pdflatex..."
+	pdflatex -v
+	@echo "\n...Looking for R software..."
+	R --version
+	@echo "\n...Looking for pdfjam..."
+	pdfjam --version
+	@echo "\n...Looking for LibreOffice's soffice ..."
+	soffice --version
 
 clean: 
 	@rm -f $(LOG) 
 	@rm -f $(QUESTIONS)
 	@rm -f out_$(FILE).pdf print_$(FILE).pdf
+	@rm -f out_einheitenabfrage.pdf out_einheitenloesungen.pdf
 	@rm -f $(OBJDIR)/$(FILE).pdf 
 	@rm -f $(OBJDIR)/$(FILE).ps
 	@rm -f $(OBJDIR)/$(FILE).dvi
 	@rm -f $(OBJDIR)/$(FILE).aux
 	@rm -f $(OBJDIR)/$(FILE).log
 	@rm -f $(OBJDIR)/$(FILE).out
+	@rm -f $(OBJDIR)/table.*.csv
+
 
 distclean: clean
-	@rm -f $(OBJDIR)/table.*.csv
-	@rm -f table.*.csv
+	@rm -f $(OBJDIR)/table.*.ods

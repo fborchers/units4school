@@ -12,6 +12,9 @@
 
 \LoadClass{article}
 
+% Fußnoten als Symbole anstelle von Zahlen:
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+
 
 
 \newif\ifprintanswers

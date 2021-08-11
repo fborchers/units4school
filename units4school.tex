@@ -22,7 +22,8 @@ layout=a5paper,% defaults to paper if omitted.
 showframe=false,%% showframe, showcrop  %false,showcrop=true,
 margin=4mm,
 top=6mm,
-left=12mm
+left=12mm,
+bottom=8mm
 }
 
 
@@ -31,44 +32,58 @@ left=12mm
 
 
 % siunitx --------
-\usepackage[locale=DE,per-mode=fraction]{siunitx}
-% deal with the ß-bug, source:
+\usepackage[%
+locale=DE,
+per-mode=fraction,
+binary-units=true
+]{siunitx}
+% Now deal with the ß-bug, source:
 % https://tex.stackexchange.com/questions/33140/mathpazo-siunitx-%CF%80-turns-into-%C3%9F
 \protected\def\numpi{\text{\ensuremath{\pi}}}
 \sisetup{input-symbols = \numpi}
 % Since make's sed replacement changes \pico (workaround) :
 %\DeclareSIPrefix\numpico{numpico}{-12} % fails, instead:
 \def\numpico{\pico}
+%
+\DeclareSIUnit\huygens{Hy}% Missing unit.
 
 
+% Use variants for \phi and \epsilon :
+\renewcommand{\epsilon}{\varepsilon}  % epsilon by Russian tradition
+\renewcommand{\phi}{\varphi}
 
 
 
 \parindent=0pt
 
-\AtBeginDocument{
-	% add tomorrow's date  
-	% error if end of month...
-	\advance\day by +1
-}
-
 
 \begin{document}
 
-Name: \rule[-.4ex]{7cm}{.4pt}\hfill%
+Vor- und Zuname: \raisebox{-2pt}{\rule[-.4ex]{5cm}{.4pt}}\hfill%
 % add the date:
-\the\day.\the\month.\the\year%
+%\the\day.\the\month.\the\year%
+Datum: \raisebox{-2pt}{\rule[-.4ex]{3cm}{.4pt}}
 \hspace*{.5cm}% add some margin space.
 
 
 % Section Header ---
 \vspace{6mm}
 % switch '\ifprintanswers' defined in the class file:
-\textbf{\large Einheiten-Abfrage, Physik \ifprintanswers \hfill \textcolor{AccentColor}{Antworten}\fi}
+\textbf{\large Einheitenabfrage, Physik \ifprintanswers \hfill \textcolor{AccentColor}{Antworten}\fi
+%\hfill 5 Punkte
+}% end textbf.
 \vspace{3mm}
 
-% Hinweis ---
-Runde bei Rechenaufgaben ggf. auf drei relevante Stellen.
+% Hinweise ---
+% Runde bei Rechenaufgaben ggf. auf drei relevante Stellen.
+Gib bei jeder Frage nur genau eine Antwort.
+
+% Insert questions here:
+
+
+
+
+
 
 
 %% Fill up to 15 questions overall: --------
@@ -89,5 +104,8 @@ Runde bei Rechenaufgaben ggf. auf drei relevante Stellen.
 \ifnum\theexerciseID<15 {\input{build/Q13}} \fi
 \ifnum\theexerciseID<15 {\input{build/Q14}} \fi
 \ifnum\theexerciseID<15 {\input{build/Q15}} \fi
+%
+% Frage Nummer 16:   16? 
+\ifnum\theexerciseID<15 {\input{build/Q16}} \fi
 %
 \end{document}
