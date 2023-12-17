@@ -1,5 +1,6 @@
 CHANGELOG
 ---------
+- v0.20 from Sept 2022: English translation added.
 - v0.11 from Aug 10th, 2021, added functions tSw and wSw
   to simplify the process of asking for engineering questions.
   Removed the following lines from the README:

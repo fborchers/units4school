@@ -49,10 +49,10 @@ constants<- read.table(file=file1,sep=";",header=TRUE,colClasses = "character")
 
 # PART II --- Generate valid question combinations :
 
-# Generate a lot of random question parameters as a simple list. 
+# Generate N (a lot of) random question parameters as a simple list. 
 # This will set the probability distribution of the three
 # question:
-questions <- sample(c("unit","unit","unit","prefix","prefix","constant"),70,replace=TRUE)
+questions <- sample(c("unit","unit","unit","prefix","prefix","constant"),1000,replace=TRUE)
 
 
 # Hard-code the number of question types for each of the three
@@ -93,7 +93,7 @@ zeile <- function (arow){
 }# end definition of function zeile. 
 
 
-# Apply the functions 'type' and 'zeile' to the 50 questions
+# Apply the functions 'type' and 'zeile' to the N questions
 # in the 'questions' column:
 questionmatrix <- cbind(questions,lapply(questions,type),lapply(cbind(questions,lapply(questions,type)),zeile))
 # For each line the upper command creates two lines. One of

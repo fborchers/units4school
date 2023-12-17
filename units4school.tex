@@ -2,7 +2,20 @@
 \documentclass{./units4school}
 % there is an option: answers to print the answers.
 
+
+% Choose a sans-serif font:
 \usepackage{cmbright}
+% and correct what seems to be a bug in the new version, see:
+% https://tex.stackexchange.com/questions/629019/siunitx-in-apperent-conflict-with-cmbright/629022#629022
+\DeclareMathAlphabet{\mathsf}{OT1}{\familydefault}{m}{n}
+\AtBeginDocument{\sisetup{unit-font-command = \mathrm}}
+
+% Compatibility with the old version of siunitx ---
+% Delete these lines when Debian stable upgrade siunitx.
+%\newcommand{\qty}[2]{\SI{#1}{#2}}
+%\newcommand{\unit}[1]{\si{#1}}
+% end siunitx.
+
 
 %% font setup for latex:
 \usepackage[utf8]{inputenc}
@@ -32,20 +45,33 @@ bottom=8mm
 
 
 % siunitx --------
+
 \usepackage[%
-locale=DE,
+locale=UK,% was DE for German.
 per-mode=fraction,
 binary-units=true
 ]{siunitx}
+
 % Now deal with the ß-bug, source:
 % https://tex.stackexchange.com/questions/33140/mathpazo-siunitx-%CF%80-turns-into-%C3%9F
-\protected\def\numpi{\text{\ensuremath{\pi}}}
-\sisetup{input-symbols = \numpi}
+% This whole affair has become obsolete since the redefinition
+% of \mu_0 as numerical 1.2566 10^-6 N A^-2
+%\protected\def\numpi{\text{\ensuremath{\pi}}}
+%\sisetup{input-symbols = \numpi}
 % Since make's sed replacement changes \pico (workaround) :
 %\DeclareSIPrefix\numpico{numpico}{-12} % fails, instead:
-\def\numpico{\pico}
+%\def\numpico{\pico}
 %
+\DeclareSIUnit\litre{l}% adjust litre and liter as "l".
+\DeclareSIUnit\amu{u}% atomic mass unit (Dalton)
 \DeclareSIUnit\huygens{Hy}% Missing unit.
+\DeclareSIUnit\permille{\text{\textperthousand}}% Promille.
+
+
+% and the "do nothing unit" \noop (see documentation):
+\DeclareSIUnit\noop{\relax}
+\newcommand{\prefix}[1]{\unit{#1\noop}}
+
 
 
 % Use variants for \phi and \epsilon :
@@ -59,24 +85,29 @@ binary-units=true
 
 \begin{document}
 
-Vor- und Zuname: \raisebox{-2pt}{\rule[-.4ex]{5cm}{.4pt}}\hfill%
+Full Name: %Vor- und Zuname: 
+\raisebox{-2pt}{\rule[-.4ex]{5cm}{.4pt}}\hfill% Unterstrich für den Namen.
 % add the date:
 %\the\day.\the\month.\the\year%
-Datum: \raisebox{-2pt}{\rule[-.4ex]{3cm}{.4pt}}
+Date: % Datum: 
+\raisebox{-2pt}{\rule[-.4ex]{3cm}{.4pt}}
 \hspace*{.5cm}% add some margin space.
 
 
 % Section Header ---
 \vspace{6mm}
 % switch '\ifprintanswers' defined in the class file:
-\textbf{\large Einheitenabfrage, Physik \ifprintanswers \hfill \textcolor{AccentColor}{Antworten}\fi
+%\textbf{\large Einheitenabfrage, Physik \ifprintanswers \hfill \textcolor{AccentColor}{Antworten}% deutsch; es folgt die englische Zeile:
+\textbf{\large Test on the Metric System \ifprintanswers \hfill \textcolor{AccentColor}{Answers}
+\fi
 %\hfill 5 Punkte
 }% end textbf.
 \vspace{3mm}
 
 % Hinweise ---
-% Runde bei Rechenaufgaben ggf. auf drei relevante Stellen.
-Gib bei jeder Frage nur genau eine Antwort.
+% Runde bei Rechenaufgaben ggf. auf drei relevante Stellen. (alt)
+% Gib bei jeder Frage nur genau eine Antwort.
+For each question give one answer only.
 
 % Insert questions here:
 
@@ -89,23 +120,23 @@ Gib bei jeder Frage nur genau eine Antwort.
 %% Fill up to 15 questions overall: --------
 %% This copy-paste removes a need for another package (for-loop).
 %% The counter 'exerciseID' is from the class file :
-\ifnum\theexerciseID<15 {\input{build/Q1}} \fi
-\ifnum\theexerciseID<15 {\input{build/Q2}} \fi
-\ifnum\theexerciseID<15 {\input{build/Q3}} \fi
-\ifnum\theexerciseID<15 {\input{build/Q4}} \fi
-\ifnum\theexerciseID<15 {\input{build/Q5}} \fi
-\ifnum\theexerciseID<15 {\input{build/Q6}} \fi
-\ifnum\theexerciseID<15 {\input{build/Q7}} \fi
-\ifnum\theexerciseID<15 {\input{build/Q8}} \fi
-\ifnum\theexerciseID<15 {\input{build/Q9}} \fi
-\ifnum\theexerciseID<15 {\input{build/Q10}} \fi
-\ifnum\theexerciseID<15 {\input{build/Q11}} \fi
-\ifnum\theexerciseID<15 {\input{build/Q12}} \fi
-\ifnum\theexerciseID<15 {\input{build/Q13}} \fi
-\ifnum\theexerciseID<15 {\input{build/Q14}} \fi
-\ifnum\theexerciseID<15 {\input{build/Q15}} \fi
-%
+\ifnum\theexerciseID<16 {\input{build/Q1}} \fi
+\ifnum\theexerciseID<16 {\input{build/Q2}} \fi
+\ifnum\theexerciseID<16 {\input{build/Q3}} \fi
+\ifnum\theexerciseID<16 {\input{build/Q4}} \fi
+\ifnum\theexerciseID<16 {\input{build/Q5}} \fi
+\ifnum\theexerciseID<16 {\input{build/Q6}} \fi
+\ifnum\theexerciseID<16 {\input{build/Q7}} \fi
+\ifnum\theexerciseID<16 {\input{build/Q8}} \fi
+\ifnum\theexerciseID<16 {\input{build/Q9}} \fi
+\ifnum\theexerciseID<16 {\input{build/Q10}} \fi
+\ifnum\theexerciseID<16 {\input{build/Q11}} \fi
+\ifnum\theexerciseID<16 {\input{build/Q12}} \fi
+\ifnum\theexerciseID<16 {\input{build/Q13}} \fi
+\ifnum\theexerciseID<16 {\input{build/Q14}} \fi
+\ifnum\theexerciseID<16 {\input{build/Q15}} \fi
+% 				      6
 % Frage Nummer 16:   16? 
-\ifnum\theexerciseID<15 {\input{build/Q16}} \fi
+\ifnum\theexerciseID<16 {\input{build/Q16}} \fi
 %
 \end{document}

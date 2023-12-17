@@ -7,8 +7,9 @@ QUESTIONS:= $(addprefix $(OBJDIR)/, Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8 Q9 Q10 Q11 Q12 Q13 Q
 srcfiles := table.units.ods table.prefix.ods table.constants.ods
 
 # Variable `soffice` holds a link to LibreOffice's command-line tool:
-# On a Mac this has to be the full path to soffice. On the Mac I have this was:
+# On a Mac this has to be the full path to soffice. On the iMac I have this was:
 # soffice := /Volumes/DISKNAME/Applications/LibreOffice.app/Contents/MacOS/soffice
+# However, on the new Mac I got thereafter this was no longer necessary
 soffice  := soffice
 
 .PHONY: export out pdf print  
@@ -43,8 +44,8 @@ $(OBJDIR)/table.constants.%.ods: table.constants.ods | $(OBJDIR)
 # Generic rule to create the readable csv-files for R:
 # 'soffice' is a command-line tool to convert from LibreOffice to textfile.
 # The bit 1 (or 2) >/dev/null at end of line will suppress printing to the terminal.
-table.%.csv: $(OBJDIR)/table.%.ods
-	@$(soffice) --headless --convert-to csv:"Text - txt - csv (StarCalc)":59,ANSI,0 $< 1>/dev/null 2>/dev/null
+$(OBJDIR)/table.%.csv: $(OBJDIR)/table.%.ods
+	@$(soffice) --headless --convert-to csv:"Text - txt - csv (StarCalc)":59,ANSI,0 --outdir $(OBJDIR)/ $< 1>/dev/null 2>/dev/null
 # The intermediate target table.%.csv will be deleted automatically;
 # this is why a line "rm table.prefix.10.csv ..." might appear.
 # The resulting csv-file will be moved to $(OBJDIR) in the next step.
@@ -53,10 +54,13 @@ table.%.csv: $(OBJDIR)/table.%.ods
 # Copy the csv file to $(OBJDIR) and at the same time replace
 # the string '\pi' with '\numpi'. This is a workaround, see 
 # units4school.tex for its handling of \numpi.
-# Also, order-only dependency on $(OBJDIR); the directory just has to be there:
-$(OBJDIR)/table.%.csv: table.%.csv | $(OBJDIR)
-	@# mv $< $@
-	@sed "s/\pi/numpi/g" $< > $@
+# Also, order-only dependency on $(OBJDIR); the directory just 
+# has to be present there:
+#$(OBJDIR)/table.%.csv: table.%.csv | $(OBJDIR)
+#	@# mv $< $@
+#	@sed "s/\pi/numpi/g" $< > $@
+# This has become expendable since the redefinition of \mu_0 
+# as a numeric value.
 
 
 10.ods := $(addprefix $(OBJDIR)/,$(addsuffix .10.ods,$(basename $(srcfiles))))
@@ -80,6 +84,7 @@ $(OBJDIR)/table.%.csv: table.%.csv | $(OBJDIR)
 	@echo "Generating questions ..."
 	@Rscript questions.R 10
 	@echo "Running LaTeX on input file (compilation log in $(LOG))..."
+	@echo "\tpdflatex -output-directory=build $(FILE).tex"	
 	@pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1	
 	@#mv $(OBJDIR)/$(FILE).pdf out_einheitenabfrage.pdf
 	@pdfjam --landscape --nup 2x1 $(OBJDIR)/$(FILE).pdf $(OBJDIR)/$(FILE).pdf --outfile out_einheitenabfrage.pdf 1>/dev/null 2>/dev/null
@@ -90,6 +95,7 @@ $(OBJDIR)/table.%.csv: table.%.csv | $(OBJDIR)
 	@echo "Generating questions ..."
 	@Rscript questions.R 11
 	@echo "Running LaTeX on input file (compilation log in $(LOG))..."
+	@echo "\tpdflatex -output-directory=build $(FILE).tex"	
 	@pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1	
 	@#mv $(OBJDIR)/$(FILE).pdf out_einheitenabfrage.pdf
 	@pdfjam --landscape --nup 2x1 $(OBJDIR)/$(FILE).pdf $(OBJDIR)/$(FILE).pdf --outfile out_einheitenabfrage.pdf 1>/dev/null 2>/dev/null
@@ -100,6 +106,7 @@ $(OBJDIR)/table.%.csv: table.%.csv | $(OBJDIR)
 	@echo "Generating questions ..."
 	@Rscript questions.R 12
 	@echo "Running LaTeX on input file (compilation log in $(LOG))..."
+	@echo "\tpdflatex -output-directory=build $(FILE).tex"	
 	@pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1	
 	@#mv $(OBJDIR)/$(FILE).pdf out_einheitenabfrage.pdf
 	@pdfjam --landscape --nup 2x1 $(OBJDIR)/$(FILE).pdf $(OBJDIR)/$(FILE).pdf --outfile out_einheitenabfrage.pdf 1>/dev/null 2>/dev/null
@@ -110,6 +117,7 @@ $(OBJDIR)/table.%.csv: table.%.csv | $(OBJDIR)
 	@echo "Generating questions ..."
 	@Rscript questions.R 13
 	@echo "Running LaTeX on input file (compilation log in $(LOG))..."
+	@echo "\tpdflatex -output-directory=build $(FILE).tex"	
 	@pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1	
 	@#mv $(OBJDIR)/$(FILE).pdf out_einheitenabfrage.pdf
 	@pdfjam --landscape --nup 2x1 $(OBJDIR)/$(FILE).pdf $(OBJDIR)/$(FILE).pdf --outfile out_einheitenabfrage.pdf 1>/dev/null 2>/dev/null
@@ -120,7 +128,7 @@ $(OBJDIR)/table.%.csv: table.%.csv | $(OBJDIR)
 # A simple print routine :
 pdf: out_einheitenabfrage.pdf
 out_einheitenabfrage.pdf: $(FILE).tex questions.R
-	@pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1
+	pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1
 	@mv $(OBJDIR)/$(FILE).pdf out_einheitenabfrage.pdf
 
 
