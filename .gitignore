@@ -1,0 +1,8 @@
+.gitignore
+**/.DS_Store
+
+# Ignore the build directory:
+build/
+
+# Ignore the built output files:
+out_einheiten*
