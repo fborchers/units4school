@@ -4,13 +4,13 @@ README
     units4school
     A Simple Tool to Generate Unit Tests for Physics Teachers
     
-    Version: 	v0.11
+    Version: 	v0.20
     OS's:		Linux (Ubuntu, Debian,...) and Mac OS supported
     		    Windows is not supported as of today.
     Source: 	https://github.com/fborchers/units4school
-    Date:		10 Aug 2021
+    Date:		Dec. 2023
     Author:		F. Borchers
-    Languages:	German
+    Languages:	English
 
 
 SUMMARY
