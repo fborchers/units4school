@@ -119,24 +119,26 @@ For each question give one answer only.
 
 %% Fill up to 15 questions overall: --------
 %% This copy-paste removes a need for another package (for-loop).
-%% The counter 'exerciseID' is from the class file :
-\ifnum\theexerciseID<16 {\input{build/Q1}} \fi
-\ifnum\theexerciseID<16 {\input{build/Q2}} \fi
-\ifnum\theexerciseID<16 {\input{build/Q3}} \fi
-\ifnum\theexerciseID<16 {\input{build/Q4}} \fi
-\ifnum\theexerciseID<16 {\input{build/Q5}} \fi
-\ifnum\theexerciseID<16 {\input{build/Q6}} \fi
-\ifnum\theexerciseID<16 {\input{build/Q7}} \fi
-\ifnum\theexerciseID<16 {\input{build/Q8}} \fi
-\ifnum\theexerciseID<16 {\input{build/Q9}} \fi
-\ifnum\theexerciseID<16 {\input{build/Q10}} \fi
-\ifnum\theexerciseID<16 {\input{build/Q11}} \fi
-\ifnum\theexerciseID<16 {\input{build/Q12}} \fi
-\ifnum\theexerciseID<16 {\input{build/Q13}} \fi
-\ifnum\theexerciseID<16 {\input{build/Q14}} \fi
-\ifnum\theexerciseID<16 {\input{build/Q15}} \fi
-% 				      6
-% Frage Nummer 16:   16? 
-\ifnum\theexerciseID<16 {\input{build/Q16}} \fi
-%
+%% The counter 'exerciseID' is from the class file. Control the
+%% number of questions with this if here:
+%%                    |
+%%                    V
+\ifnum\theexerciseID<15 {\input{build/Q1}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q2}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q3}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q4}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q5}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q6}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q7}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q8}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q9}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q10}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q11}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q12}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q13}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q14}} \fi
+\ifnum\theexerciseID<15 {\input{build/Q15}} \fi
+% Frage Nummer 16:   15? 
+\ifnum\theexerciseID<15 {\input{build/Q16}} \fi
+
 \end{document}
