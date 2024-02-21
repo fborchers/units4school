@@ -6,3 +6,6 @@ build/
 
 # Ignore the built output files:
 out_einheiten*
+
+# Ignore files created for an R session:
+.Rapp.history

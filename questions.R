@@ -336,7 +336,7 @@ QC <- function(file,params){
 
 # PART IV --- Print a lot of questions to files :
 
-numquestions <- 16
+numquestions <- 20
 
 for(i in 1:numquestions){
   # Get question from questionmatrix: 
