@@ -61,18 +61,24 @@ binary-units=true
 % Since make's sed replacement changes \pico (workaround) :
 %\DeclareSIPrefix\numpico{numpico}{-12} % fails, instead:
 %\def\numpico{\pico}
-%
+
+
+% Declare more units ---
+
+% Energien:
+\DeclareSIUnit[inter-unit-product=]\Wh{\W\hour}% Wh
+% kWh is predefined.
+\DeclareSIUnit[inter-unit-product=]\GWh{\giga\W\hour}% GWh
+
+% Sonstige:
 \DeclareSIUnit\litre{l}% adjust litre and liter as "l".
 \DeclareSIUnit\amu{u}% atomic mass unit (Dalton)
 \DeclareSIUnit\huygens{Hy}% Missing unit.
 \DeclareSIUnit\permille{\text{\textperthousand}}% Promille.
 
-
 % and the "do nothing unit" \noop (see documentation):
 \DeclareSIUnit\noop{\relax}
 \newcommand{\prefix}[1]{\unit{#1\noop}}
-
-
 
 % Use variants for \phi and \epsilon :
 \renewcommand{\epsilon}{\varepsilon}  % epsilon by Russian tradition
