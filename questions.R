@@ -65,12 +65,12 @@ constants<- read.table(file=file1,sep=";",header=TRUE,colClasses = "character")
 # Generate N (a lot of) random question parameters as a simple list. 
 # This will set the probability distribution of the three
 # question:
-questions <- sample(c("unit","unit","unit","prefix","prefix","constant"),1000,replace=TRUE)
+questions <- sample(c("unit","unit","unit","prefix","prefix","constant"),250,replace=TRUE)
 
 
 # Hard-code the number of question types for each of the three
 # questions (unit, prefix or constant).
-numunits <- 5 # manually: no of questions in units.ods minus 1.
+numunits <- 6 # manually: no of questions in units.ods minus 1.
 numprefix<- 4 # manually: no of questions in prefix.ods minus 1.
 numconsts<- 3 # manually.
 # numquestions defined manually below.
@@ -256,7 +256,7 @@ QU <- function(file,params){
   # For debugging add a comment in the file:
   write(paste("%Einheit vom Typ:",questiontype,"Zeile",qunit),file,append=TRUE)
   # generate the text of the question:
-  if(questiontype==14){ # "Gib in wissenschaftl. Schreibweise an":
+  if(questiontype==17){ # "Gib in wissenschaftl. Schreibweise an":
     # Generate a number (with 4 significant digits) and append a unit:
     power  <- sample(c(4,3,2,-1,-2,-3),1)
     digits <- 4-power
