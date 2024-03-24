@@ -1,9 +1,7 @@
-# Question Generator for Einheitenabfrage --------
+# Question Generator for 'units4school' --------
 #
 # For version info consult the file VERSION
 
-
-# setwd("/home/borchers/Documents/Werkstatt/einheitenabfrage")
 
 # Read arguments from command-line (this will be transferred 
 # from the makefile call) :
@@ -11,13 +9,22 @@ args <- commandArgs(T)[1]
 # args <- 12 # (for testing only, comment out to run!).
 
 
-# This R script consists of three parts: 
+# This R script consists of four parts: 
 # the input from the *.ods tables,
-# the generation of question combinations, and
-# an output routine to create LaTeX code.
+# the generation of question combinations,
+# an output routine to create LaTeX code, and
+# the actual printing of the questions to files.
 
 
 
+
+#### ##    ## ########  ##     ## ######## 
+ ##  ###   ## ##     ## ##     ##    ##    
+ ##  ####  ## ##     ## ##     ##    ##    
+ ##  ## ## ## ########  ##     ##    ##    
+ ##  ##  #### ##        ##     ##    ##    
+ ##  ##   ### ##        ##     ##    ##    
+#### ##    ## ##         #######     ##    
 
 
 # PART 1 --- Read info from files :
@@ -45,7 +52,13 @@ constants<- read.table(file=file1,sep=";",header=TRUE,colClasses = "character")
 
 
 
-
+ ######  ##    ## ####### ###### ######## ####  ######  ##    ##    
+##    ## ##    ## ##     ##    ##   ##     ##  ##    ## ###   ##    
+##    ## ##    ## ##     ##         ##     ##  ##    ## ####  ##    
+##    ## ##    ## ######  ######    ##     ##  ##    ## ## ## ##    
+## ## ## ##    ## ##           ##   ##     ##  ##    ## ##  ####    
+##   ##  ##    ## ##     ##    ##   ##     ##  ##    ## ##   ###    
+ #### ##  ######  ####### ######    ##    ####  ######  ##    ##
 
 # PART II --- Generate valid question combinations :
 
@@ -152,7 +165,13 @@ questionmatrix <- questionmatrix[solutions,1:3]
 
 
 
-
+ #######  ##     ## ######## ########  ##     ## ######## 
+##     ## ##     ##    ##    ##     ## ##     ##    ##    
+##     ## ##     ##    ##    ##     ## ##     ##    ##    
+##     ## ##     ##    ##    ########  ##     ##    ##    
+##     ## ##     ##    ##    ##        ##     ##    ##    
+##     ## ##     ##    ##    ##        ##     ##    ##    
+ #######   #######     ##    ##         #######     ##    
 
 # PART III --- Output LaTeX source code :
 
@@ -212,7 +231,7 @@ tSw <- function(zahl,potenz=0,einheit=""){
 # return a LaTeX siunitx-compatible string:
 wSw <- function(zahl, potenz=0, verschiebung=0,einheit=""){
   zahl <- zahl * 10^(potenz)
-  zahl <- formatC(zahl, format = "e", digits = 2)
+  zahl <- formatC(zahl, format = "e", digits = 3)
   if(einheit=="") paste("\\num{",zahl,"}",sep="")
   else paste("\\SI{",zahl,"}{",einheit,"}",sep="")
 } # end function wSw.
@@ -221,18 +240,24 @@ wSw <- function(zahl, potenz=0, verschiebung=0,einheit=""){
 
 
 
-
+ #######  ##     ## 
+##     ## ##     ## 
+##     ## ##     ## 
+##     ## ##     ## 
+##  ## ## ##     ## 
+##    ##  ##     ## 
+ ##### ##  #######  
 
 QU <- function(file,params){
   # refresh file, i.e. overwrite its content:
   writeLines(file,text="")
   questiontype <- params$questiontype
   qunit        <- params$questionrow
-  # For debugging:
-  write(paste("%Einheit: Typ:",questiontype,"Zeile",qunit),file,append=TRUE)
+  # For debugging add a comment in the file:
+  write(paste("%Einheit vom Typ:",questiontype,"Zeile",qunit),file,append=TRUE)
   # generate the text of the question:
   if(questiontype==14){ # "Gib in wissenschaftl. Schreibweise an":
-    # Generate a number (4 Nachkommastellen) and append a unit:
+    # Generate a number (with 4 significant digits) and append a unit:
     power  <- sample(c(4,3,2,-1,-2,-3),1)
     digits <- 4-power
     # now generate one (n=1) random number with runif(n, min = 0, max = 1):
@@ -261,14 +286,20 @@ QU <- function(file,params){
 
 
 
-
+ #######  ########  
+##     ## ##     ## 
+##     ## ##     ## 
+##     ## ########  
+##  ## ## ##        
+##    ##  ##        
+ ##### ## ##        
 
 QP <- function(file="build/Q1",params){
   # refresh file:
   writeLines(file,text="")
   questiontype <- params$questiontype
   questionprefix <- params$questionrow
-  # For debugging:
+  # For debugging add a comment in the file:
   write(paste("% Vorsatz: Typ",questiontype,"Zeile",questionprefix),file,append=TRUE)
   # questions of the type: 'Gib in wissensch. Schreibweise an...' 
   if(questiontype==11){
@@ -306,22 +337,26 @@ QP <- function(file="build/Q1",params){
   Qtofile(file,text=paste(questiontext,answertext))
 }# end definition of function QP.
 
+# Debug:
 #QP(file="build/Q1",params=questionmatrix[3,2:3])
-#QP(file="build/Q1",params=questionmatrix[3,2:3])
-#QP(file="build/Q1",params=questionmatrix[3,2:3])
-#QP(file="build/Q1",params=questionmatrix[3,2:3])
-#
 
 
 
+ #######   ######  
+##     ## ##    ## 
+##     ## ##       
+##     ## ##       
+##  ## ## ##       
+##    ##  ##    ## 
+ ##### ##  ######  
 
 QC <- function(file,params){
   # refresh file:
   writeLines(file,text="")
   questiontype <- params$questiontype
   qconstant <- params$questionrow
-  # For debugging:
-  write(paste("%Konstante: Typ:",questiontype,"Zeile:",qconstant),file,append=TRUE)
+  # For debugging add a comment in the file:
+  write(paste("%Konstante von Typ:",questiontype,"Zeile:",qconstant),file,append=TRUE)
   while(questiontype ==6 && constants[qconstant,questiontype] == "")
   {qconstant <- sample(2:length(constants[,1]),1)}
   questiontext <- constants[qconstant,questiontype]
@@ -333,6 +368,18 @@ QC <- function(file,params){
 
 
 
+
+
+
+
+
+########  ########  #### ##    ## ######## 
+##     ## ##     ##  ##  ###   ##    ##    
+##     ## ##     ##  ##  ####  ##    ##    
+########  ########   ##  ## ## ##    ##    
+##        ##   ##    ##  ##  ####    ##    
+##        ##    ##   ##  ##   ###    ##    
+##        ##     ## #### ##    ##    ##    
 
 # PART IV --- Print a lot of questions to files :
 
@@ -355,29 +402,6 @@ for(i in 1:numquestions){
   }
   else {}# should not occurr.
 }# end for.
-
-
-
-
-
-
-# TESTING AREA --------
-
-
-
-
-
-
-
-#QP(file="build/Q1",params=questionmatrix[1,2:3])
-#
-
-
-
-# ------------------------------------
-
-
-
 
 
 

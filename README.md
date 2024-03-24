@@ -10,7 +10,7 @@ README
     Source: 	https://github.com/fborchers/units4school
     Date:		Dec. 2023
     Author:		F. Borchers
-    Languages:	English
+    Languages:	English, German
 
 
 SUMMARY
@@ -85,7 +85,5 @@ Lastly, `soffice` is the command line tool of LibreOffice. On a Linux machine it
 
 For some reason the conversion utility of OpenOffice does not work (version 4.1.6). The problem is that Apache's OpenOffice's `soffice` comes without the command-line option --convert-to. Use LibreOffice instead, or better still, tell me how to do it with OpenOffice.
 
-If -- for whatever reason -- the `soffice` routine fails you can use the csv-files from the corresponding branch.
-
-
+If---for whatever reason---the `soffice` routine fails you can use the csv-files provided in the corresponding branch.
 
