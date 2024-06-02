@@ -125,7 +125,8 @@ $(OBJDIR)/table.%.csv: $(OBJDIR)/table.%.ods
 	@mv $(OBJDIR)/$(FILE).pdf out_einheitenloesungen.pdf
 
 
-# A simple print routine :
+# A simple print routine
+# will rebuild because questions are phony targets, see above.
 pdf: out_einheitenabfrage.pdf
 out_einheitenabfrage.pdf: $(FILE).tex questions.R
 	pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1
