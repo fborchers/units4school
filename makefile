@@ -136,8 +136,11 @@ out_einheitenabfrage.pdf: $(FILE).tex questions.R
 
 
 
-.PHONY: clean distclean export test  
+.PHONY: clean distclean view export test  
 
+# VIEW Mac routine
+view: | out_einheitenloesungen.pdf
+	@open out_einheitenloesungen.pdf
 
 # This test routine will check if the necessary programs are installed:
 test:
