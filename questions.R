@@ -385,7 +385,10 @@ QC <- function(file,params){
 
 # PART IV --- Print a lot of questions to files :
 
-numquestions <- nrow(questionmatrix)
+
+# Maximum number of questions printed as TeX files is
+# 20 or smaller is fewer questions were generated:
+numquestions <- min(20, nrow(questionmatrix) )
 
 for(i in 1:numquestions){
   # Get question from questionmatrix: 
