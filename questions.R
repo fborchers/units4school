@@ -148,12 +148,14 @@ hasSolution <- function (qq){
 solutions <- apply(questionmatrix,MARGIN=1,hasSolution)
 # Then use the solution vector to filter the questions that have answers:
 questionmatrix <- questionmatrix[solutions,1:3]
-# Now the 'questionmatrix' consists of three columns. They
-# are 'type' 'question' and 'answer' like the following:
+# Now 'questionmatrix' is an R object of class "matrix" "array"
+# and consists of three columns. They are 
+# 'type', 'question' and 'answer' as in the following example:
 #  [1,]  "unit"     2    13         
 #  [2,]  "constant" 2    6          
 #  [3,]  "prefix"   3    4    
-# The length varies around 30 because some questions (those without
+#   ⋮
+# The length varies around 20-30 because some questions (those without
 # an answer) have been filtered out. 
 
 # For debuggin only :
@@ -383,7 +385,7 @@ QC <- function(file,params){
 
 # PART IV --- Print a lot of questions to files :
 
-numquestions <- 20
+numquestions <- nrow(questionmatrix)
 
 for(i in 1:numquestions){
   # Get question from questionmatrix: 
