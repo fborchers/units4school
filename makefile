@@ -62,15 +62,16 @@ $(OBJDIR)/table.%.csv: $(OBJDIR)/table.%.ods
 # This has become expendable since the redefinition of \mu_0 
 # as a numeric value.
 
-
+09.ods := $(addprefix $(OBJDIR)/,$(addsuffix .09.ods,$(basename $(srcfiles))))
 10.ods := $(addprefix $(OBJDIR)/,$(addsuffix .10.ods,$(basename $(srcfiles))))
 11.ods := $(addprefix $(OBJDIR)/,$(addsuffix .11.ods,$(basename $(srcfiles))))
 12.ods := $(addprefix $(OBJDIR)/,$(addsuffix .12.ods,$(basename $(srcfiles))))
 13.ods := $(addprefix $(OBJDIR)/,$(addsuffix .13.ods,$(basename $(srcfiles))))
 
 # Precious files will not be deleted in a single run (overzealous deletion):
-.PRECIOUS:  $(10.ods) $(11.ods) $(12.ods) $(13.ods) 
+.PRECIOUS:  $(09.ods) $(10.ods) $(11.ods) $(12.ods) $(13.ods) 
 
+09.csv := $(addsuffix .csv,$(basename $(09.ods)))
 10.csv := $(addsuffix .csv,$(basename $(10.ods)))
 11.csv := $(addsuffix .csv,$(basename $(11.ods)))
 12.csv := $(addsuffix .csv,$(basename $(12.ods)))
@@ -78,7 +79,7 @@ $(OBJDIR)/table.%.csv: $(OBJDIR)/table.%.ods
 
 
 # Now, the actual build routines:
-.PHONY: 10 11 12 13
+.PHONY: 9 09 10 11 12 13
 
 10: questions.R $(10.csv)
 	@echo "Generating questions ..."
