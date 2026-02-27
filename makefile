@@ -81,6 +81,17 @@ $(OBJDIR)/table.%.csv: $(OBJDIR)/table.%.ods
 # Now, the actual build routines:
 .PHONY: 9 09 10 11 12 13
 
+9: questions.R $(09.csv)
+	@echo "Generating questions ..."
+	@Rscript questions.R 09
+	@echo "Running LaTeX on input file (compilation log in $(LOG))..."
+	@echo "\tpdflatex -output-directory=build $(FILE).tex"	
+	@pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1	
+	@#mv $(OBJDIR)/$(FILE).pdf out_einheitenabfrage.pdf
+	@pdfjam --landscape --nup 2x1 $(OBJDIR)/$(FILE).pdf $(OBJDIR)/$(FILE).pdf --outfile out_einheitenabfrage.pdf 1>/dev/null 2>/dev/null
+	@pdflatex -output-directory=build "\PassOptionsToClass{answers}{./units4school}\input{$(FILE).tex}" > $(LOG) 2>&1
+	@mv $(OBJDIR)/$(FILE).pdf out_einheitenloesungen.pdf
+
 10: questions.R $(10.csv)
 	@echo "Generating questions ..."
 	@Rscript questions.R 10
