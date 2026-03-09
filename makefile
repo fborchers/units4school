@@ -29,7 +29,7 @@ print: print_$(FILE).pdf
 $(OBJDIR):
 	@mkdir $(OBJDIR)
 
-# Create the editable ods-tables 
+# Create the editable ods-tables ---
 # (?) from their order-only ( | ) sources.
 # You will have to add one column in front with "#"s in the 
 # ods-files to disable some rows.
@@ -78,62 +78,70 @@ $(OBJDIR)/table.%.csv: $(OBJDIR)/table.%.ods
 13.csv := $(addsuffix .csv,$(basename $(13.ods)))
 
 
-# Now, the actual build routines:
+# The Settings ---
+# Use $| for all the order-only dependencies:
+$(OBJDIR)/settings.%.tex: | units4settings.tex
+	@cp $| $@
+
+
+# Now, the actual build routines ---
 .PHONY: 9 09 10 11 12 13
 
-9: questions.R $(09.csv)
+9: 09
+
+09: questions.R $(09.csv) | $(OBJDIR)/settings.09.tex
 	@echo "Generating questions ..."
 	@Rscript questions.R 09
 	@echo "Running LaTeX on input file (compilation log in $(LOG))..."
 	@echo "\tpdflatex -output-directory=build $(FILE).tex"	
-	@pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1	
+	@pdflatex -output-directory=build "\input{$(FILE).tex} \input{$(OBJDIR)/settings.09.tex}" > $(LOG) 2>&1	
 	@#mv $(OBJDIR)/$(FILE).pdf out_einheitenabfrage.pdf
 	@pdfjam --landscape --nup 2x1 $(OBJDIR)/$(FILE).pdf $(OBJDIR)/$(FILE).pdf --outfile out_einheitenabfrage.pdf 1>/dev/null 2>/dev/null
-	@pdflatex -output-directory=build "\PassOptionsToClass{answers}{./units4school}\input{$(FILE).tex}" > $(LOG) 2>&1
+	@pdflatex -output-directory=build "\PassOptionsToClass{answers}{./units4school} \input{$(FILE).tex} \input{$(OBJDIR)/settings.09.tex}" > $(LOG) 2>&1
 	@mv $(OBJDIR)/$(FILE).pdf out_einheitenloesungen.pdf
 
-10: questions.R $(10.csv)
+10: questions.R $(10.csv) | $(OBJDIR)/settings.10.tex
 	@echo "Generating questions ..."
 	@Rscript questions.R 10
 	@echo "Running LaTeX on input file (compilation log in $(LOG))..."
 	@echo "\tpdflatex -output-directory=build $(FILE).tex"	
-	@pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1	
+	@pdflatex -output-directory=build "\input{$(FILE).tex} \input{$(OBJDIR)/settings.10.tex}" > $(LOG) 2>&1	
 	@#mv $(OBJDIR)/$(FILE).pdf out_einheitenabfrage.pdf
 	@pdfjam --landscape --nup 2x1 $(OBJDIR)/$(FILE).pdf $(OBJDIR)/$(FILE).pdf --outfile out_einheitenabfrage.pdf 1>/dev/null 2>/dev/null
-	@pdflatex -output-directory=build "\PassOptionsToClass{answers}{./units4school}\input{$(FILE).tex}" > $(LOG) 2>&1
+	@pdflatex -output-directory=build "\PassOptionsToClass{answers}{./units4school} \input{$(FILE).tex} \input{$(OBJDIR)/settings.10.tex}" > $(LOG) 2>&1
 	@mv $(OBJDIR)/$(FILE).pdf out_einheitenloesungen.pdf
 
-11: questions.R $(11.csv)
+11: questions.R $(11.csv) | $(OBJDIR)/settings.11.tex
 	@echo "Generating questions ..."
 	@Rscript questions.R 11
 	@echo "Running LaTeX on input file (compilation log in $(LOG))..."
 	@echo "\tpdflatex -output-directory=build $(FILE).tex"	
-	@pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1	
+	@pdflatex -output-directory=build "\input{$(FILE).tex} \input{$(OBJDIR)/settings.11.tex}" > $(LOG) 2>&1	
 	@#mv $(OBJDIR)/$(FILE).pdf out_einheitenabfrage.pdf
 	@pdfjam --landscape --nup 2x1 $(OBJDIR)/$(FILE).pdf $(OBJDIR)/$(FILE).pdf --outfile out_einheitenabfrage.pdf 1>/dev/null 2>/dev/null
-	@pdflatex -output-directory=build "\PassOptionsToClass{answers}{./units4school}\input{$(FILE).tex}" > $(LOG) 2>&1
+	@pdflatex -output-directory=build "\PassOptionsToClass{answers}{./units4school} \input{$(FILE).tex} \input{$(OBJDIR)/settings.11.tex}" > $(LOG) 2>&1
 	@mv $(OBJDIR)/$(FILE).pdf out_einheitenloesungen.pdf
 
-12: questions.R $(12.csv)
+12: questions.R $(12.csv) | $(OBJDIR)/settings.12.tex
 	@echo "Generating questions ..."
 	@Rscript questions.R 12
 	@echo "Running LaTeX on input file (compilation log in $(LOG))..."
 	@echo "\tpdflatex -output-directory=build $(FILE).tex"	
-	@pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1	
+	@pdflatex -output-directory=build "\input{$(FILE).tex} \input{$(OBJDIR)/settings.12.tex}" > $(LOG) 2>&1	
 	@#mv $(OBJDIR)/$(FILE).pdf out_einheitenabfrage.pdf
 	@pdfjam --landscape --nup 2x1 $(OBJDIR)/$(FILE).pdf $(OBJDIR)/$(FILE).pdf --outfile out_einheitenabfrage.pdf 1>/dev/null 2>/dev/null
-	@pdflatex -output-directory=build "\PassOptionsToClass{answers}{./units4school}\input{$(FILE).tex}" > $(LOG) 2>&1
+	@pdflatex -output-directory=build "\PassOptionsToClass{answers}{./units4school} \input{$(FILE).tex} \input{$(OBJDIR)/settings.12.tex}" > $(LOG) 2>&1
 	@mv $(OBJDIR)/$(FILE).pdf out_einheitenloesungen.pdf
 
-13: questions.R $(13.csv)
+13: questions.R $(13.csv) | $(OBJDIR)/settings.13.tex
 	@echo "Generating questions ..."
 	@Rscript questions.R 13
 	@echo "Running LaTeX on input file (compilation log in $(LOG))..."
 	@echo "\tpdflatex -output-directory=build $(FILE).tex"	
-	@pdflatex -output-directory=build $(FILE).tex > $(LOG) 2>&1	
+	@pdflatex -output-directory=build "\input{$(FILE).tex} \input{$(OBJDIR)/settings.13.tex}" > $(LOG) 2>&1	
 	@#mv $(OBJDIR)/$(FILE).pdf out_einheitenabfrage.pdf
 	@pdfjam --landscape --nup 2x1 $(OBJDIR)/$(FILE).pdf $(OBJDIR)/$(FILE).pdf --outfile out_einheitenabfrage.pdf 1>/dev/null 2>/dev/null
-	@pdflatex -output-directory=build "\PassOptionsToClass{answers}{./units4school}\input{$(FILE).tex}" > $(LOG) 2>&1
+	@pdflatex -output-directory=build "\PassOptionsToClass{answers}{./units4school} \input{$(FILE).tex} \input{$(OBJDIR)/settings.13.tex}" > $(LOG) 2>&1
 	@mv $(OBJDIR)/$(FILE).pdf out_einheitenloesungen.pdf
 
 

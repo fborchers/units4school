@@ -21,8 +21,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
-\usepackage[ngerman]{babel}
-\usepackage[german=quotes]{csquotes}
+
 
 \usepackage{xcolor}
 \definecolor{AccentColor}{HTML}{d7191c}%% red.
@@ -44,26 +43,14 @@ bottom=8mm
 
 
 
-% siunitx --------
+% Package siunitx --------
 
 \usepackage[%
-locale=UK,% was DE for German.
-per-mode=fraction,
-binary-units=true
+	per-mode=fraction,
+	binary-units=true
 ]{siunitx}
 
-% Now deal with the ß-bug, source:
-% https://tex.stackexchange.com/questions/33140/mathpazo-siunitx-%CF%80-turns-into-%C3%9F
-% This whole affair has become obsolete since the redefinition
-% of \mu_0 as numerical 1.2566 10^-6 N A^-2
-%\protected\def\numpi{\text{\ensuremath{\pi}}}
-%\sisetup{input-symbols = \numpi}
-% Since make's sed replacement changes \pico (workaround) :
-%\DeclareSIPrefix\numpico{numpico}{-12} % fails, instead:
-%\def\numpico{\pico}
-
-
-% Declare more units ---
+% Declare more units for siunitx ---
 
 % Energien:
 \DeclareSIUnit[inter-unit-product=]\Wh{\W\hour}% Wh
@@ -89,65 +76,5 @@ binary-units=true
 \parindent=0pt
 
 
-\begin{document}
-
-Full Name: %Vor- und Zuname: 
-\raisebox{-2pt}{\rule[-.4ex]{5cm}{.4pt}}\hfill% Unterstrich für den Namen.
-% add the date:
-%\the\day.\the\month.\the\year%
-Date: % Datum: 
-\raisebox{-2pt}{\rule[-.4ex]{3cm}{.4pt}}
-\hspace*{.5cm}% add some margin space.
 
 
-% Section Header ---
-\vspace{6mm}
-% switch '\ifprintanswers' defined in the class file:
-%\textbf{\large Einheitenabfrage, Physik \ifprintanswers \hfill \textcolor{AccentColor}{Antworten}% deutsch; es folgt die englische Zeile:
-\textbf{\large Test on the Metric System \ifprintanswers \hfill \textcolor{AccentColor}{Answers}
-\fi
-%\hfill 5 Punkte
-}% end textbf.
-\vspace{3mm}
-
-% Hinweise ---
-% Runde bei Rechenaufgaben ggf. auf drei relevante Stellen. (alt)
-% Gib bei jeder Frage nur genau eine Antwort.
-For each question give one answer only.
-
-% Insert questions here:
-
-
-
-
-
-
-
-%% Fill up to 20 questions overall: --------
-%% This copy-paste removes a need for another package (for-loop).
-%% The counter 'exerciseID' is from the class file of "exam". 
-%% Control the number of questions with this IF here:
-%%                    |
-%%                    V
-\ifnum\theexerciseID<12 {\input{build/Q1}}  \fi% 1
-\ifnum\theexerciseID<12 {\input{build/Q2}}  \fi% 2
-\ifnum\theexerciseID<12 {\input{build/Q3}}  \fi% 3
-\ifnum\theexerciseID<12 {\input{build/Q4}}  \fi% 4
-\ifnum\theexerciseID<12 {\input{build/Q5}}  \fi% 5
-\ifnum\theexerciseID<12 {\input{build/Q6}}  \fi% 6
-\ifnum\theexerciseID<12 {\input{build/Q7}}  \fi% 7
-\ifnum\theexerciseID<12 {\input{build/Q8}}  \fi% 8
-\ifnum\theexerciseID<12 {\input{build/Q9}}  \fi% 9
-\ifnum\theexerciseID<12 {\input{build/Q10}} \fi%10
-\ifnum\theexerciseID<12 {\input{build/Q11}} \fi%11
-\ifnum\theexerciseID<12 {\input{build/Q12}} \fi%12
-\ifnum\theexerciseID<12 {\input{build/Q13}} \fi%13
-\ifnum\theexerciseID<12 {\input{build/Q14}} \fi%14
-\ifnum\theexerciseID<12 {\input{build/Q15}} \fi%15
-\ifnum\theexerciseID<12 {\input{build/Q16}} \fi%16
-\ifnum\theexerciseID<12 {\input{build/Q17}} \fi%17
-\ifnum\theexerciseID<12 {\input{build/Q18}} \fi%18
-\ifnum\theexerciseID<12 {\input{build/Q19}} \fi%19
-\ifnum\theexerciseID<12 {\input{build/Q20}} \fi%20
-
-\end{document}
