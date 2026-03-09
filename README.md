@@ -4,11 +4,11 @@ README
     units4school
     A Simple Tool to Generate Unit Tests for Physics Teachers
     
-    Version: 	v0.20
+    Version: 	v0.3
     OS's:		Linux (Ubuntu, Debian,...) and Mac OS supported
     		    Windows is not supported as of today.
     Source: 	https://github.com/fborchers/units4school
-    Date:		Dec. 2023
+    Date:		Mar. 2026
     Author:		F. Borchers
     Languages:	English, German
 
@@ -43,6 +43,28 @@ to check if the prerequisites are installed as expected. Then run
 	make 12
 to generate a test and a printable version for the students. 
 
+
+SETTING THE LANGUAGE
+--------------------
+
+Standard is English. If you want to use English, there is nothing you will have to change. If you want to switch to German, change the settings file and the ods tables, which is easy to do. The settings file is located under `build` and can be changed to to following:
+```
+%% Language ---
+\usepackage[ngerman]{babel}
+
+%% Settings of siunitx ---
+\sisetup{% 
+  locale          = DE,
+}
+
+\begin{document}
+
+Vor- und Zuname: 
+\raisebox{-2pt}{\rule[-.4ex]{5cm}{.4pt}}\hfill% Unterstrich für den Namen.
+
+\end{document}
+```
+Secondly, modify the `ods` files to include only the lines in German, use an `#` to comment out the other languages (or simply delete the corresponding lines), see the next section for detailed instructions on the `ods` files.
 
 
 MODIFY (easy)
